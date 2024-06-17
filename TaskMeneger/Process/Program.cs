@@ -1,4 +1,5 @@
-﻿//#define SINGLE_PROCESS
+﻿#define SINGLE_PROCESS
+//#define ALL_PROCESSES
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
 
 namespace Process
 {
@@ -33,19 +35,36 @@ namespace Process
 			Console.WriteLine($"SessionID: {process.SessionId}");
 			Console.WriteLine($"Threads:{process.Threads}");
 			Console.WriteLine($"Priority:{process.PriorityClass}"); 
-#endif
-			
+
+			PerformanceCounter counter = new PerformanceCounter("Process", "% Processor Time", process.ProcessName, true);
+			Console.WriteLine("Press any key to continue...");
+			while(!Console.KeyAvailable)
+			{
 				Console.Clear();
-				System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcesses(); // возвращает массив всех заппущенных процессов
-				for(int i = 0; i < processes.Length; i++)
-				{
-					  Console.WriteLine($"{processes[i].Id}\t{processes[i].MainModule.FileName}");
-					  //Console.Write($"Name: {processes[i].ProcessName}\t");
-					  //Console.Write($"PID: {processes[i].Id}\t");
-					  Console.Write($"Path: {processes[i].MainModule.FileName}\t");
-					  //Console.WriteLine();
-                }
-			
+				double procent = counter.NextValue();
+				Console.WriteLine($"{process.ProcessName} CPU load: {procent/10} %");
+				int units = 1024 * 1024;
+				Console.WriteLine($"Working set:	{process.WorkingSet64/units}");
+				Console.WriteLine($"Private Working set:	{process.PrivateMemorySize64/units}");
+				System.Threading.Thread.Sleep(100);
+			}
+			process.CloseMainWindow();
+			process.Dispose();
+			process = null;
+#endif
+
+#if ALL_PROCESSES
+			Console.Clear();
+			System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcesses(); // возвращает массив всех заппущенных процессов
+			for (int i = 0; i < processes.Length; i++)
+			{
+				Console.WriteLine($"{processes[i].Id}\t{processes[i].MainModule.FileName}");
+				//Console.Write($"Name: {processes[i].ProcessName}\t");
+				//Console.Write($"PID: {processes[i].Id}\t");
+				Console.Write($"Path: {processes[i].MainModule.FileName}\t");
+				//Console.WriteLine();
+			}
+#endif
 		}
 		[DllImport("advapi32.dll", SetLastError = true)]
 		private static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr handle);
