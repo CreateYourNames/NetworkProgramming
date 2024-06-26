@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 
 namespace TaskMeneger
 {
@@ -16,10 +17,13 @@ namespace TaskMeneger
 		readonly int ramFactor = 1024;
 		readonly string suffix = "kB";
 		Dictionary<int, Process> d_processes;
+        CommandLine cmd;
         public MainForm()
         {
             InitializeComponent();
-            SetColumns();
+			cmd = new CommandLine();
+
+			SetColumns();
             statusStrip1.Items.Add("");
             LoadProcesses();
         }
@@ -109,8 +113,26 @@ namespace TaskMeneger
 
 		private void runToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-            CommandLine cmd = new CommandLine();
+            //CommandLine cmd = new CommandLine();
             cmd.ShowDialog();
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+            StreamWriter sw = new StreamWriter("ProgramList.txt");
+
+            for(int i=0; i<cmd.ComboBoxFileName.Items.Count; i++)
+            {
+                sw.WriteLine(cmd.ComboBoxFileName.Items[i]);
+            }
+
+            sw.Close();
+		}
+
+		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            //MessageBox.Show(this, listViewProcesses.SelectedItems[0].Text, "Selected PID", MessageBoxButtons.OK);
+            d_processes[Convert.ToInt32(listViewProcesses.SelectedItems[0].Text)].Kill();
 		}
 	}
 }
