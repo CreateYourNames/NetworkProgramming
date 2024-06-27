@@ -77,7 +77,6 @@
 			this.comboBoxFileName.TabIndex = 0;
 			this.comboBoxFileName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.comboBoxFileName_KeyDown);
 			this.comboBoxFileName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxFileName_KeyPress);
-			this.comboBoxFileName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxFileName_KeyUp);
 			// 
 			// pictureBox1
 			// 

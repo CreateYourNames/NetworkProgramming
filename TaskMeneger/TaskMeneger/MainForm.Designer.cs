@@ -136,12 +136,12 @@
 			this.contextMenuStripProcess.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem});
 			this.contextMenuStripProcess.Name = "contextMenuStripProcess";
-			this.contextMenuStripProcess.Size = new System.Drawing.Size(211, 56);
+			this.contextMenuStripProcess.Size = new System.Drawing.Size(115, 28);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
 			this.closeToolStripMenuItem.Text = "Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
@@ -158,6 +158,7 @@
 			this.listViewProcesses.TabIndex = 0;
 			this.listViewProcesses.UseCompatibleStateImageBehavior = false;
 			this.listViewProcesses.View = System.Windows.Forms.View.Details;
+			this.listViewProcesses.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewProcesses_ColumnClick);
 			// 
 			// MainForm
 			// 
